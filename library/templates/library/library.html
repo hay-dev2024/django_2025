@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Library</title>
+</head>
+<body>
+    나의 라이브러리이다.<br><br>
+
+    <h1>나의 책 목록</h1>
+    {% for book in books %}
+        <h1>{{ book }}</h1>
+
+        <h3>제목: {{ book.title }}</h3>
+        <h3>작가: {{ book.author }}</h3>
+        <h3>출간일: {{ book.published_date }}</h3>
+        <hr>
+
+    {% endfor %}
+
+</body>
+</html>

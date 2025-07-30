@@ -12,4 +12,6 @@ class Post(models.Model):
     def __str__(self):
         return f"게시글 제목: {self.title} - 게시글 내용: {self.content}"
 
+    def get_absolute_url(self):
+        return f"/blog/{self.pk}/"  # pk는 primary key로, 각 게시글을 고유하게 식별하는 값
 

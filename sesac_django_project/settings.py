@@ -38,7 +38,8 @@ INSTALLED_APPS = [
     "django.contrib.messages",
     "django.contrib.staticfiles",
     'single_pages', # single_pages 앱을 추가
-    'blog'
+    'blog',
+    'library',
 ]
 
 MIDDLEWARE = [

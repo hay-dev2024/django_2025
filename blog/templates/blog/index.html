@@ -11,7 +11,7 @@
     {% for post in posts %}
         <h1>{{ post }}</h1>
 
-        <h3>제목: {{ post.title }}</h3>
+        <h3><a href="{{ post.get_absolute_url }}">제목: {{ post.title }}</a></h3>
         <h3>내용: {{ post.content }}</h3>
         <h3>생성일: {{ post.created_date }}</h3>
         <hr>
