@@ -9,3 +9,6 @@ class Book(models.Model):
 
     def __str__(self):
         return f"{self.title} by {self.author}"
+
+    def get_absolute_url(self):
+        return f"/library/{self.pk}/"  # pk는 primary key로, 각 게시글을 고유하게 식별하는 값

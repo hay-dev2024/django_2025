@@ -17,6 +17,8 @@ Including another URLconf
 
 from django.contrib import admin
 from django.urls import path, include
+from django.conf import settings
+from django.conf.urls.static import static
 
 # http://127.0.0.1:8000/admin/ --> 여기서 admin이 url 패턴이다
 # http://127.0.0.1:8000/ --> single_pages.urls로 보내라
@@ -26,4 +28,6 @@ urlpatterns = [
     path('', include('single_pages.urls')),
     path("blog/", include('blog.urls')),
     path("library/", include('library.urls')),
+
 ]
+urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

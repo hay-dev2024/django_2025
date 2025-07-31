@@ -12,3 +12,13 @@ def landing(request):
                         'name': 'Hay'
                     })
 
+
+def aboutme(request):
+    return render(request,
+                  'single_pages/aboutme.html',
+                    context={
+                        'name' : 'Hay',
+                    }
+                  )
+
+
