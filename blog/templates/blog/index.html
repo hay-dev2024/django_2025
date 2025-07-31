@@ -90,9 +90,15 @@
                     <!-- Featured blog post-->
                     <!-- for 문을 사용해서 블로그 글 looping -->
                     {% for post in posts %}
-
                     <div class="card mb-4">
-                        <a href="#!"><img class="card-img-top" src={{ post.uploaded_image.url }} alt="..." /></a>
+
+                        {% if post.uploaded_image %}
+                            <a href="#!"><img class="card-img-top" src={{ post.uploaded_image.url }} alt="..." /></a>
+                        {% else %}
+                            <img class="img-fluid rounded"
+                                    src="https://dummyimage.com/900x400/ced4da/6c757d.jpg" alt="..." />
+                        {%  endif %}
+
                         <div class="card-body">
                             <div class="small text-muted"> {{ post.created_date }} </div>
                             <h2 class="card-title"> {{ post.title }} </h2>
@@ -100,7 +106,6 @@
                             <a class="btn btn-primary" href={{ post.get_absolute_url }}>Read more →</a>
                         </div>
                     </div>
-
                     {% endfor %}
 
 
@@ -122,6 +127,8 @@
                 <div class="col-lg-4">
                     <!-- Search widget-->
                     <div class="card mb-4">
+                        <button><a href="/blog/create/">글쓰기</a></button>
+
                         <div class="card-header">Search</div>
                         <div class="card-body">
                             <div class="input-group">

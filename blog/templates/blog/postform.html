@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>글쓰기페이지</title>
+</head>
+<body>
+안녕 여기는 postform.html 이야.
+글을 쓰는 화면이지.
+
+    <form method="post" enctype="multipart/form-data">
+        {% csrf_token %} <!-- CSRF 토큰은 Django에서 보안상 필수 사용 -->
+        {{ postform }}
+        <input type="submit">
+    </form>
+
+
+</body>
+</html>

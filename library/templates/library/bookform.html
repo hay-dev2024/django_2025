@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>라이브러리글쓰기</title>
+</head>
+<body>
+    <h1>여기는 library 글쓰기 페이지야</h1>
+
+    <form method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+        {{ bookform }}
+        <input type="submit">
+
+    </form>
+
+</body>
+</html>

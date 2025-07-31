@@ -98,9 +98,20 @@
                             <a class="badge bg-secondary text-decoration-none link-light" href="#!">Web Design</a>
                             <a class="badge bg-secondary text-decoration-none link-light" href="#!">Freebies</a>
                         </header>
+
+                        {% if post.uploaded_file %}
+                         <button><a href={{ post.uploaded_file.url }} download>다운로드 : {{ post.uploaded_file.name }}</a></button>
+                        {% endif %}
+
                         <!-- Preview image figure-->
                         <figure class="mb-4">
-                            <img class="img-fluid rounded" src={{ post.uploaded_image.url }} alt="..." />
+                            {% if post.uploaded_image %}
+                                <img class="img-fluid rounded"
+                                    src={{ post.uploaded_image.url }} alt="..." />
+                            {% else %}
+                                <img class="img-fluid rounded"
+                                    src="https://dummyimage.com/900x400/ced4da/6c757d.jpg" alt="..." />
+                            {% endif %}
                         </figure>
                         <!-- Post content-->
                         <section class="mb-5">

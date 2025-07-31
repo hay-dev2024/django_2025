@@ -81,13 +81,25 @@
         </header>
         <!-- Section-->
         <section class="py-5">
+
             <div class="container px-4 px-lg-5 mt-5">
+
+                    <button><a href="/library/bookcreate/">책등록하기</a></button>
+
                 <div class="row gx-4 gx-lg-5 row-cols-2 row-cols-md-3 row-cols-xl-4 justify-content-center">
+
+
                     {%  for book in books %}
                     <div class="col mb-5">
                         <div class="card h-100">
                             <!-- Product image-->
-                            <img class="card-img-top" src="https://dummyimage.com/450x300/dee2e6/6c757d.jpg" alt="..." />
+
+                        {% if book.uploaded_image %}
+                            <img class="card-img-top mb-5 mb-md-0" src={{ book.uploaded_image.url }} alt="..." />
+                        {% else %}
+                            <img class="card-img-top mb-5 mb-md-0" src="https://dummyimage.com/600x700/dee2e6/6c757d.jpg" alt="..." />
+                        {% endif %}
+
                             <!-- Product details-->
                             <div class="card-body p-4">
                                 <div class="text-center">
@@ -95,9 +107,6 @@
                                     <h5 class="fw-bolder">{{ book.title }}</h5>
                                     <!-- 작가 정보-->
                                     <div><i>{{ book.author }}</i></div>
-                                    <br>
-                                    <!-- 출간일-->
-                                    <div>출간일: {{ book.published_date }}</div>
                                 </div>
                             </div>
                             <!-- Product actions-->
