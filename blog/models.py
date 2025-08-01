@@ -14,6 +14,9 @@ class Category(models.Model):
     def __str__(self):
         return f"{self.name}----{self.slug}"
 
+    def get_absolute_url(self):
+        return f"/blog/category/{self.slug}/"
+
 
 # 장고의 models.Model을 상속받아서 데이터베이스 테이블을 클래스로 정의합니다.
 class Post(models.Model):
