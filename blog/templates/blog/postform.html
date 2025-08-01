@@ -1,19 +1,36 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>글쓰기페이지</title>
-</head>
-<body>
-안녕 여기는 postform.html 이야.
-글을 쓰는 화면이지.
+{% extends 'blog/base.html' %}
+{% block main-area %}
 
+{% load static %}
+
+
+    {# form의 action= 의 디폴트 값은 (여기서는) /blog/create 이다 #}
     <form method="post" enctype="multipart/form-data">
-        {% csrf_token %} <!-- CSRF 토큰은 Django에서 보안상 필수 사용 -->
-        {{ postform }}
-        <input type="submit">
+        {% csrf_token %} <!-- Cross Site Request Forgery 토큰은 Django에서 보안상 필수 사용 -->
+        <img src="{% static 'blog/glasses.gif' %}" alt="안경" width="400px" >
+        <br>
+
+        <h3>블로그 글을 작성해봐</h3>
+        <hr>
+        <h3>제목: {{ postform.title }}</h3>
+        <h3>내용: {{ postform.content }}</h3>
+        <hr>
+
+        <h5>이미지: {{ postform.uploaded_image }}</h5>
+        <h5>파일: {{ postform.uploaded_file }}</h5>
+
+        <hr>
+        <h4><input type="submit"></h4>
     </form>
 
+    <br>
 
-</body>
-</html>
+{% endblock %}
+
+{% block writing-area %}
+{% endblock %}
+
+{% block header-area %}
+        <h1 class="fw-bolder">안녕 어서 글을 작성해봐</h1>
+        <p class="lead mb-0">글을 써!</p>
+{% endblock %}

@@ -20,20 +20,21 @@ def detail(request, pk):
                   context={'post': post}
                   )
 
+# 블로그 글쓰기 로직
+# GET과 POST 요청을 모두 처리하는 함수
 def create(request):
     if request.method == 'POST':
-        # 글 작성하다가 제출버튼을 누른 경우
+        # 글 작성하다가 제출 버튼을 누른 경우
         postform = PostForm(request.POST, request.FILES)
         if postform.is_valid():
             # 폼이 유효한 경우, 즉 입력값이 올바른 경우
-            post1 = postform.save(commit=False) # commit=False는 아직 저장하지 않고, 객체를 생성만 함
-            post1.title = post1.title + " 바나나파인애플이다!"
-            post1.save()
+            post1 = postform.save(commit=False) # commit=False는 아직 DB에 저장하지 않고 메모리 상에만 존재하는 상태; 객체를 생성만 함
+            post1.title = post1.title + " 바나나파인애플이다!" # 후처리
+            post1.save() # DB에 저장
             # postform.save()
             return redirect('/blog/') # 글 목록 페이지로 리다이렉트
-    else:
-        # get 요청이 들어온 경우(맨 처음에 빈 폼을 보여주는 경우; 글 작성 페이지를 처음 열었을 때)
-        postform = PostForm()
+    else: # GET 요청이 들어온 경우(새글쓰기 버튼을 눌러서 create()함수로 들어온 경우; 맨 처음에 빈 폼을 보여주는 경우; 글 작성 페이지를 처음 열었을 때)
+        postform = PostForm() # 새 인스턴스를 생성
     return render(request,
                   template_name='blog/postform.html',
                   context={'postform': postform}
