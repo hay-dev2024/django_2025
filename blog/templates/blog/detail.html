@@ -11,10 +11,23 @@
             <!-- Post title-->
             <h1 class="fw-bolder mb-1">{{ post.title }}</h1>
             <!-- Post meta content-->
-            <div class="text-muted fst-italic mb-2">Posted on {{ post.created_date }} by 접니다</div>
+            <div class="text-muted fst-italic mb-2">
+                글쓴날: {{ post.created_date }},
+                글쓴이: {{ post.author.first_name }}
+            </div>
             <!-- Post categories-->
-            <a class="badge bg-secondary text-decoration-none link-light" href="#!">Web Design</a>
-            <a class="badge bg-secondary text-decoration-none link-light" href="#!">Freebies</a>
+
+            <!-- 카테고리는 있을 수도 있고 없을 수도 있다 -->
+            {% if post.category.name %}
+                <a class="badge bg-secondary text-decoration-none link-light" href="#!">
+                    {{ post.category.name }}
+                </a>
+            {% else %}
+                <a class="badge bg-secondary text-decoration-none link-light" href="#!">
+                    미분류
+                </a>
+            {% endif %}
+
         </header>
 
         {% if post.uploaded_file %}

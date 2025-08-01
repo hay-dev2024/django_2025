@@ -1,24 +1,29 @@
 from django.shortcuts import render, redirect
 
 from .forms import PostForm
-from .models import Post
+from .models import Post, Category
+
 
 # Create your views here.
 
 # 함수 생성
 def index(request):
     posts = Post.objects.all().order_by('-pk')  # 작성한 포스트를 모두 가져옴; select * from blog_post; 과 동일함. 게시물을 역순으로 정렬 : .order_by('-pk')
+    categorys = Category.objects.all()
     return render(request,
                   'blog/index.html',
-                  context={'posts': posts} # posts를 화면에 보여주기
-                  )
+                  context={'posts': posts,
+                           'categorys': categorys,
+                           })
 
 def detail(request, pk):
     post = Post.objects.get(pk=pk)  # pk(primary key)에 해당하는 포스트를 가져옴
+    categorys = Category.objects.all()
     return render(request,
                   'blog/detail.html',
-                  context={'post': post}
-                  )
+                  context={'post': post,
+                           'categorys': categorys,
+                           })
 
 # 블로그 글쓰기 로직
 # GET과 POST 요청을 모두 처리하는 함수
@@ -35,10 +40,12 @@ def create(request):
             return redirect('/blog/') # 글 목록 페이지로 리다이렉트
     else: # GET 요청이 들어온 경우(새글쓰기 버튼을 눌러서 create()함수로 들어온 경우; 맨 처음에 빈 폼을 보여주는 경우; 글 작성 페이지를 처음 열었을 때)
         postform = PostForm() # 새 인스턴스를 생성
+        categorys = Category.objects.all()
     return render(request,
                   template_name='blog/postform.html',
-                  context={'postform': postform}
-                  )
+                  context={'postform': postform,
+                           'categorys': categorys,
+                           })
 
 
 # 자동으로 글이 작성되게 해보기

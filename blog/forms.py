@@ -4,7 +4,13 @@ from blog.models import Post
 class PostForm(forms.ModelForm):
     class Meta:
         model = Post
-        fields = ['title', 'content', 'uploaded_image', 'uploaded_file']
+        fields = ['title',
+                  'author',
+                  'content',
+                  'category',
+                  'uploaded_image',
+                  'uploaded_file',
+                  ]
 
 
 

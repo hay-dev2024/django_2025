@@ -15,7 +15,17 @@
         {%  endif %}
 
         <div class="card-body">
-            <div class="small text-muted"> {{ post.created_date }} </div>
+            <div class="small text-muted">
+
+                {% if post.category.name %}
+                    카테고리: {{ post.category.name }},
+                {%  else %}
+                    카테고리: 미분류,
+                {%  endif %}
+
+                글쓴날: {{ post.created_date }},
+                글쓴이: {{ post.author.first_name }}
+            </div>
             <h2 class="card-title"> {{ post.title }} </h2>
             <p class="card-text"> {{ post.content }} </p>
             <a class="btn btn-primary" href={{ post.get_absolute_url }}>Read more →</a>
