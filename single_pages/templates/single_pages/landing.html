@@ -1,10 +1,22 @@
-<!DOCTYPE html>
-<html lang="ko">
-<head>
-    <meta charset="UTF-8">
-    <title>Welcome</title>
-</head>
-<body>
-    <h1>반가워. 난 Landing Page라고 해. 첫페이지야.</h1>
-</body>
-</html>
+
+{% extends 'single_pages/base.html' %}
+
+
+{% block main-area %}
+{% load static %}
+
+
+    <marquee scrollamount="10"><img src={% static 'single_pages/run.gif' %}></marquee>
+    <marquee scrollamount="20"><img src={% static 'single_pages/run.gif' %}></marquee>
+    <marquee scrollamount="30"><img src={% static 'single_pages/run.gif' %}></marquee>
+    <marquee scrollamount="40"><img src={% static 'single_pages/run.gif' %}></marquee>
+    <marquee scrollamount="50"><img src={% static 'single_pages/run.gif' %}></marquee>
+    <marquee scrollamount="60"><img src={% static 'single_pages/run.gif' %}></marquee>
+
+
+{% endblock %}
+
+{% block header-area %}
+        <h1 class="fw-bolder">이곳은 랜딩페이지</h1>
+        <p class="lead mb-0">환영한다!</p>
+{% endblock %}

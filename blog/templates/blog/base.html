@@ -63,6 +63,7 @@
                                 {% for category in categorys %}
                                     <li><a href={{ category.get_absolute_url }}> {{ category.name }} </a></li>
                                 {%  endfor %}
+                                    <li><a href="/blog/category/no_category">미분류</a></li>
 
                             </ul>
                         </div>

@@ -19,8 +19,11 @@ def index(request):
 
 def category(request, slug):
     categorys = Category.objects.all()
-    category = Category.objects.get(slug=slug)
-    posts = Post.objects.filter(category=category)
+    if slug == "no_category":
+        posts = Post.objects.filter(category=None)
+    else:
+        category = Category.objects.get(slug=slug)
+        posts = Post.objects.filter(category=category)
     return render(request,
                   'blog/index.html',
                   context={'posts': posts,
@@ -36,6 +39,7 @@ def detail(request, pk):
                   context={'post': post,
                            'categorys': categorys,
                            })
+
 
 # 블로그 글쓰기 로직
 # GET과 POST 요청을 모두 처리하는 함수
