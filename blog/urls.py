@@ -11,4 +11,10 @@ urlpatterns = [
     path('category/<slug>/', views.category, name='category'),
     path('<int:pk>/delete/', views.delete, name='blogdelete'),
     path('<int:pk>/update/', views.update, name='blogupdate'),
+    # Comment 관련 URL
+    path('<post_pk>/', views.detail, name='viewcomments'),
+    path('<int:pk>/comments/', views.comment_create, name='comment_create'),
+    path('<int:pk>/comment_update/', views.comment_update, name='comment_update'),
+    path('<int:pk>/comment_delete/', views.comment_delete, name='comment_delete'),
+
 ]

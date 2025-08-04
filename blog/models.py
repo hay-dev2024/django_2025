@@ -49,7 +49,7 @@ class Comment(models.Model):
     updated_date = models.DateTimeField(auto_now=True,
                                           null=True)
     def __str__(self):
-        return  f"댓글작성자: {self.author.username} 댓글내용: {self.content} in {self.post.title}"
+        return  f"댓글작성자: {self.author.username}, 댓글내용: {self.content}, 포스트이름: {self.post.title}"
 
 
 

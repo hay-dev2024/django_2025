@@ -62,41 +62,49 @@
     <section class="mb-5">
         <div class="card bg-light">
             <div class="card-body">
+
                 <!-- Comment form-->
-                <form class="mb-4"><textarea class="form-control" rows="3" placeholder="가입하고 코멘트를 남겨보렴 😊"></textarea></form>
-                <!-- Comment with nested comments-->
+{#              댓글 작성#}
+                <form method="post"  action="{% url 'comment_create' post.pk %}" class="mb-4">
+                    {% csrf_token %}
+
+{#                    name을 사용하여 views.py에서 로직을 만들때 이 textarea를 활용할 수 있도록 한다 #}
+                    <textarea name="content" class="form-control" rows="3"></textarea>
+
+{#                    댓글 작성 -> 댓글작성 버튼을 누르면 save #}
+                    <div style="text-align: right">
+                        <input class="btn btn-primary" type="submit" value="댓글작성">
+                    </div>
+                </form>
+
+                {% for comment in comments %}
+{#                <!-- Comment with nested comments-->#}
                 <div class="d-flex mb-4">
-                    <!-- Parent comment-->
+                    <!--comment-->
                     <div class="flex-shrink-0"><img class="rounded-circle" src="https://dummyimage.com/50x50/ced4da/6c757d.jpg" alt="..." /></div>
+
                     <div class="ms-3">
-                        <div class="fw-bold">학생1</div>
-                        오늘 점심은 무엇이더냐
-                        <!-- Child comment 1-->
-                        <div class="d-flex mt-4">
-                            <div class="flex-shrink-0"><img class="rounded-circle" src="https://dummyimage.com/50x50/ced4da/6c757d.jpg" alt="..." /></div>
-                            <div class="ms-3">
-                                <div class="fw-bold">학생2</div>
-                                아마... 편의점 ㅠ
-                            </div>
+                        <div class="fw-bold">
+                            {% if comment.author.first_name %}
+                                {{ comment.author.first_name }}
+                            {% else %}
+                                {{ comment.author.username }}
+                            {% endif %}
                         </div>
-                        <!-- Child comment 2-->
-                        <div class="d-flex mt-4">
-                            <div class="flex-shrink-0"><img class="rounded-circle" src="https://dummyimage.com/50x50/ced4da/6c757d.jpg" alt="..." /></div>
-                            <div class="ms-3">
-                                <div class="fw-bold">학생1</div>
-                                컵라면 + 삼각김밥?
-                            </div>
+
+                        {{ comment.content }}
+
+    {#                    댓글 수정 및 삭제 -> comment_updateform 으로 이동 #}
+                        <div style="text-align: right;">
+                            <a class="btn btn-success" href="/blog/{{ comment.pk }}/comment_update">댓글수정</a>
+                            <a class="btn btn-danger" href="/blog/{{ comment.pk }}/comment_delete">댓글삭제</a>
                         </div>
+
                     </div>
                 </div>
-                <!-- Single comment-->
-                <div class="d-flex">
-                    <div class="flex-shrink-0"><img class="rounded-circle" src="https://dummyimage.com/50x50/ced4da/6c757d.jpg" alt="..." /></div>
-                    <div class="ms-3">
-                        <div class="fw-bold">피자집 사장</div>
-                        피자 먹을래?
-                    </div>
-                </div>
+                {% endfor %}
+
+
             </div>
         </div>
     </section>

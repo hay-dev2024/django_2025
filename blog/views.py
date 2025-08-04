@@ -1,7 +1,7 @@
 from django.shortcuts import render, redirect
 
-from .forms import PostForm
-from .models import Post, Category
+from .forms import PostForm, CommentForm
+from .models import Post, Category, Comment
 
 
 # Create your views here.
@@ -34,10 +34,13 @@ def category(request, slug):
 def detail(request, pk):
     post = Post.objects.get(pk=pk)  # pk(primary key)에 해당하는 포스트를 가져옴
     categorys = Category.objects.all()
+    comments = Comment.objects.filter(post=post)  # 해당 포스트에 달린 댓글들을 가져옴; select * from blog_comment where post_id=pk;
+    # comments = Comment.objects.get(post=post)
     return render(request,
                   'blog/detail.html',
                   context={'post': post,
                            'categorys': categorys,
+                           'comments': comments,
                            })
 
 
@@ -82,7 +85,6 @@ def delete(request, pk):
 # pk -> post의 pk
 def update(request, pk):
     post = Post.objects.get(pk=pk) # 수정하고 싶은 포스트를 가져옴
-
     if request.method == 'POST':
         postform = PostForm(request.POST, request.FILES, instance=post)
         if postform.is_valid(): # 폼이 유효한 경우
@@ -93,12 +95,39 @@ def update(request, pk):
 
     return render(request,
                   template_name='blog/postupdateform.html',
-                  context={'postform': postform,}
-                  )
+                  context={'postform': postform,})
 
 
+# Comment CRUD 기능 추가
+def comment_create(request, pk):
+    post = Post.objects.get(pk=pk)
+    if request.method == 'POST':
+        content = request.POST.get('content')
+        if content and request.user.is_authenticated:
+            Comment.objects.create(post=post, content=content, author=request.user)
+    return redirect(f'/blog/{pk}/')
 
 
+def comment_update(request, pk):
+    comment = Comment.objects.get(pk=pk) # 코멘트를 수정하거나 삭제할때는 코멘트의 pk를 사용한다.
+    post = comment.post # 해당 댓글이 달린 포스트를 가져옴
+    if request.method == 'POST':
+        commentform = CommentForm(request.POST, instance=comment)
+        if commentform.is_valid():
+            commentform.save()
+            return redirect(f'/blog/{post.pk}/')
+    else:
+        commentform = CommentForm(instance=comment)
 
+    return render(request,
+                  template_name='blog/comment_updateform.html',
+                  context={'commentform': commentform,})
+
+
+def comment_delete(request, pk):
+    comment = Comment.objects.get(pk=pk)
+    post = comment.post
+    comment.delete()
+    return redirect(f'/blog/{post.pk}/')
 
 
