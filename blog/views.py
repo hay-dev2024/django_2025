@@ -73,3 +73,32 @@ def createfake(request):
     return redirect('/blog/')
 
 
+def delete(request, pk):
+    post = Post.objects.get(pk=pk)
+    post.delete() # 해당 포스트를 삭제
+    return redirect('/blog/') # 글 목록 페이지로 리다이렉트
+    # return redirect('index') # 이렇게 써도 됨; index는 urls.py에서 정의한 이름이다. urls.py에서 name='index'로 지정해주면 된다.)
+
+# pk -> post의 pk
+def update(request, pk):
+    post = Post.objects.get(pk=pk) # 수정하고 싶은 포스트를 가져옴
+
+    if request.method == 'POST':
+        postform = PostForm(request.POST, request.FILES, instance=post)
+        if postform.is_valid(): # 폼이 유효한 경우
+            postform.save()
+            return redirect('/blog/')
+    else:
+        postform = PostForm(instance=post)
+
+    return render(request,
+                  template_name='blog/postupdateform.html',
+                  context={'postform': postform,}
+                  )
+
+
+
+
+
+
+

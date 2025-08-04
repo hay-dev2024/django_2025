@@ -42,6 +42,7 @@ INSTALLED_APPS = [
     'single_pages', # single_pages 앱을 추가
     'blog',
     'library',
+    'django_extensions', # shell_plus를 사용하기 위해 추가
 ]
 
 MIDDLEWARE = [

@@ -40,3 +40,21 @@ class Post(models.Model):
         return f"/blog/{self.pk}/"  # pk는 primary key로, 각 게시글을 고유하게 식별하는 값
 
 
+class Comment(models.Model):
+    post = models.ForeignKey(Post, on_delete=models.CASCADE) # 게시글이 삭제되면 댓글도 삭제됨
+    author = models.ForeignKey(User, on_delete=models.CASCADE)
+    content = models.TextField()
+    created_date = models.DateTimeField(auto_now_add=True,
+                                        null=True)
+    updated_date = models.DateTimeField(auto_now=True,
+                                          null=True)
+    def __str__(self):
+        return  f"댓글작성자: {self.author.username} 댓글내용: {self.content} in {self.post.title}"
+
+
+
+
+
+
+
+

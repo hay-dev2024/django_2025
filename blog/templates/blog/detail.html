@@ -28,6 +28,13 @@
                 </a>
             {% endif %}
 
+
+        {# 글삭제 버튼#}
+        <div style="text-align: right;">
+            <a class="btn btn-success" href="/blog/{{ post.pk }}/update">글수정</a>
+            <a class="btn btn-danger" href="/blog/{{ post.pk }}/delete">글삭제</a>
+        </div>
+
         </header>
 
         {% if post.uploaded_file %}
