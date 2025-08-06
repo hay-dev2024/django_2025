@@ -58,6 +58,9 @@ def postAPI(request, pk):
                     status=status.HTTP_400_BAD_REQUEST)
 
 
+
+
+
 # 연습 api
 @api_view(['GET'])
 def helloAPI(request):

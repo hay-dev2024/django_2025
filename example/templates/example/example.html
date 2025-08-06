@@ -35,7 +35,9 @@
                 getPostList();
         })
 
+        // 글 목록 가져오기 기능
         function getPostList() {
+            $('#postList').empty(); // 기존 목록 초기화
             // json 형식
             $.ajax({
                 url: "{% url 'blogAPI' %}",
@@ -62,6 +64,7 @@
             })
         }
 
+        // 글 쓰기 기능
         $(document).ready(function() {
             $('#postAddBtn').click(function(){
                 const post = {
@@ -76,7 +79,11 @@
                     data: JSON.stringify(post),
                     headers: {'X-CSRFToken': csrftoken},
                     success: function(){
-                        alert("글이 등록되었습니다.");
+                        // 글 등록 성공했을 시에는 입력 폼 초기화
+                        $('#title').val('');
+                        $('#author').val('');
+                        $('#content').val('');
+                        getPostList(); // 글 목록을 다시 가져온다
                     },
                     error: function(){
                         alert("글 등록에 실패했습니다.");
@@ -93,13 +100,16 @@
         <input type="text" id="title" placeholder="title" required><br>
         <input type="text" id="author" placeholder="author" required><br>
         <input type="text" id="content" placeholder="content" required><br>
-        <input type="submit" id="postAddBtn">
+        <input type="button" id="postAddBtn" value="글쓰기">
     </form>
 
     <div id="result"></div>
 
     <h3>글 목록이다</h3>
     <div id="postList"></div>
+
+    <h3>댓글 목록이다</h3>
+
 
 </body>
 </html>
