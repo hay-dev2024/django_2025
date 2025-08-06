@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"
+            integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo="
+            crossorigin="anonymous"></script>
+</head>
+<body>
+    <h1>여기는 Example 페이지이다.</h1>
+
+    <script>
+        // CSRF 토큰 가져오기 함수
+        function getCookie(name) {
+            let cookieValue = null;
+            if (document.cookie && document.cookie !== '') {
+                const cookies = document.cookie.split(';');
+                for (let i = 0; i < cookies.length; i++) {
+                    const cookie = cookies[i].trim();
+                    // 쿠키 이름 찾기
+                    if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                        cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                        break;
+                    }
+                }
+            }
+            return cookieValue;
+        }
+        const csrftoken = getCookie('csrftoken');
+
+
+        {# 화면이 준비되면 annonymous func를 실행하라#}
+        $(document).ready(function() {
+                getPostList();
+        })
+
+        function getPostList() {
+            // json 형식
+            $.ajax({
+                url: "{% url 'blogAPI' %}",
+                type: "GET",
+                success: function(data){
+                    console.log(data);
+
+                    let list = data;
+                    $(list).each(function(){
+                        console.log(this);
+                        let str = "";
+                        str += "<hr>";
+                        str += "<div>";
+                        str += this.title + " &nbsp;&nbsp;&nbsp; ";
+                        str += this.author + " &nbsp;&nbsp;&nbsp; ";
+                        str += this.content + " &nbsp;&nbsp;&nbsp; ";
+                        str += "</div>";
+                        $('#postList').append(str);
+                    })
+                },
+                error: function(){
+                    console.log("실패!!!");
+                },
+            })
+        }
+
+        $(document).ready(function() {
+            $('#postAddBtn').click(function(){
+                const post = {
+                    title: $('#title').val(),
+                    author: $('#author').val(),
+                    content: $('#content').val(),
+                };
+                $.ajax({
+                    url: "{% url 'blogAPI' %}",
+                    type: "POST",
+                    contentType: "application/json",
+                    data: JSON.stringify(post),
+                    headers: {'X-CSRFToken': csrftoken},
+                    success: function(){
+                        alert("글이 등록되었습니다.");
+                    },
+                    error: function(){
+                        alert("글 등록에 실패했습니다.");
+                    }
+                })
+            });
+        })
+
+    </script>
+
+    <h3>새글작성</h3>
+
+    <form id="postform">
+        <input type="text" id="title" placeholder="title" required><br>
+        <input type="text" id="author" placeholder="author" required><br>
+        <input type="text" id="content" placeholder="content" required><br>
+        <input type="submit" id="postAddBtn">
+    </form>
+
+    <div id="result"></div>
+
+    <h3>글 목록이다</h3>
+    <div id="postList"></div>
+
+</body>
+</html>

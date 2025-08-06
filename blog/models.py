@@ -30,7 +30,7 @@ class Post(models.Model):
                                  null=True, blank=True)
     created_date = models.DateTimeField(auto_now_add=True, null=True)
     modified_date = models.DateTimeField(auto_now=True, null=True)
-    uploaded_image = models.ImageField(upload_to='images/', blank=True)
+    uploaded_image = models.ImageField(upload_to='images/', blank=True, null=True)
     uploaded_file = models.FileField(upload_to='files/', blank=True, null=True)
 
     def __str__(self):

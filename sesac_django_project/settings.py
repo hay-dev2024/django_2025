@@ -43,6 +43,8 @@ INSTALLED_APPS = [
     'blog',
     'library',
     'django_extensions', # shell_plus를 사용하기 위해 추가
+    'example', # example 앱을 추가; API 연습용 앱이다
+    'rest_framework',
 ]
 
 MIDDLEWARE = [
