@@ -13,7 +13,9 @@
             <!-- Post meta content-->
             <div class="text-muted fst-italic mb-2">
                 글쓴날: {{ post.created_date }},
-                글쓴이: {{ post.author.first_name }}
+{#                글쓴이: {{ post.author.first_name }}#}
+                글쓴이: {{ post.author }}
+
             </div>
             <!-- Post categories-->
 
@@ -77,6 +79,7 @@
                     </div>
                 </form>
 
+
                 {% for comment in comments %}
 {#                <!-- Comment with nested comments-->#}
                 <div class="d-flex mb-4">
@@ -85,11 +88,7 @@
 
                     <div class="ms-3">
                         <div class="fw-bold">
-                            {% if comment.author.first_name %}
-                                {{ comment.author.first_name }}
-                            {% else %}
-                                {{ comment.author.username }}
-                            {% endif %}
+                                {{ comment.author }}
                         </div>
 
                         {{ comment.content }}

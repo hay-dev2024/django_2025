@@ -29,6 +29,7 @@ urlpatterns = [
     path("blog/", include('blog.urls')),
     path("library/", include('library.urls')),
     path("example/", include('example.urls')),
+    path('accounts/', include('allauth.urls')),  # allauth의 URL을 포함시킨다
 ]
 
 urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

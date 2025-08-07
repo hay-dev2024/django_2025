@@ -2,6 +2,7 @@
 {% extends 'blog/base.html' %}
 {% block main-area %}
 
+
     <!-- Featured blog post-->
     <!-- for 문을 사용해서 블로그 글 looping -->
     {% for post in posts %}
@@ -24,7 +25,9 @@
                 {%  endif %}
 
                 글쓴날: {{ post.created_date }},
-                글쓴이: {{ post.author.first_name }}
+{#                글쓴이: {{ post.author.first_name }}#}
+                글쓴이: {{ post.author}}
+
             </div>
             <h2 class="card-title"> {{ post.title }} </h2>
             <p class="card-text"> {{ post.content }} </p>
@@ -51,7 +54,13 @@
 {% endblock %}
 
 {% block writing-area %}
-    <button><a href="/blog/create/">글쓰기</a></button>
+{#    로그인한 사용자만 글쓰기 버튼을 볼 수 있다#}
+    {% load socialaccount %}
+    {% if user.is_authenticated %}
+        <button><a href="/blog/create/">글쓰기</a></button>
+    {% else %}
+
+    {% endif %}
 {% endblock %}
 
 

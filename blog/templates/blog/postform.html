@@ -12,21 +12,27 @@
 
         <h3>블로그 글을 작성해봐</h3>
         <hr>
-        <h3>제목: {{ postform.title }}</h3>
-        <h3>글쓴이: {{ postform.author }}</h3>
-        <h3>내용: {{ postform.content }}</h3>
-        <h3>카테고리: {{ postform.category }}</h3>
+{#        <h3>제목: {{ postform.title }}</h3>#}
+{#        <h3>글쓴이: {{ postform.author }}</h3>#}
+{#        <h3>내용: {{ postform.content }}</h3>#}
+{#        <h3>카테고리: {{ postform.category }}</h3>#}
+{##}
+{#        <hr>#}
+{##}
+{#        <h5>이미지: {{ postform.uploaded_image }}</h5>#}
+{#        <h5>파일: {{ postform.uploaded_file }}</h5>#}
+{##}
+{#        <hr>#}
+{#        <h4><input type="submit"></h4>#}
+{#    </form>#}
+{##}
+{#    <br>#}
 
-        <hr>
 
-        <h5>이미지: {{ postform.uploaded_image }}</h5>
-        <h5>파일: {{ postform.uploaded_file }}</h5>
-
-        <hr>
-        <h4><input type="submit"></h4>
+        {% csrf_token %}
+        {{ postform }}
+        <input type="submit">
     </form>
-
-    <br>
 
 {% endblock %}
 

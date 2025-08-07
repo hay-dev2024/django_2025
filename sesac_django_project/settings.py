@@ -45,6 +45,11 @@ INSTALLED_APPS = [
     'django_extensions', # shell_plus를 사용하기 위해 추가
     'example', # example 앱을 추가; API 연습용 앱이다
     'rest_framework',
+    'django.contrib.sites',
+    'allauth',
+    'allauth.account',
+    'allauth.socialaccount',
+    'allauth.socialaccount.providers.google',
 ]
 
 MIDDLEWARE = [
@@ -55,6 +60,7 @@ MIDDLEWARE = [
     "django.contrib.auth.middleware.AuthenticationMiddleware",
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
+    "allauth.account.middleware.AccountMiddleware",
 ]
 
 ROOT_URLCONF = "sesac_django_project.urls"
@@ -132,3 +138,18 @@ DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 # Media files (user-uploaded files)
 MEDIA_ROOT = os.path.join(BASE_DIR, '_media')
 MEDIA_URL = '/media/'
+
+# Allauth settings
+AUTHENTICATION_BACKENDS = (
+    'django.contrib.auth.backends.ModelBackend',  # 기본 인증 백엔드
+    'allauth.account.auth_backends.AuthenticationBackend',  # Allauth 인증 백엔드
+)
+
+SITE_ID = 1  # Allauth에서 사용하는 사이트 ID
+
+# ACCOUNT_EMAIL_REQUIRED = True  # 이메일 필수 입력; deprecated
+ACCOUNT_SIGNUP_FIELDS = ['email*', 'username*', 'password1*', 'password2*']  # 회원가입 시 필수 입력 필드
+ACCOUNT_EMAIL_VERIFICATION = 'none'  # 이메일 인증 옵션
+
+LOGIN_REDIRECT_URL = '/blog/'
+LOGOUT_REDIRECT_URL = '/blog/'

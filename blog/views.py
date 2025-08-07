@@ -54,7 +54,7 @@ def create(request):
         if postform.is_valid():
             # 폼이 유효한 경우, 즉 입력값이 올바른 경우
             post1 = postform.save(commit=False) # commit=False는 아직 DB에 저장하지 않고 메모리 상에만 존재하는 상태; 객체를 생성만 함
-            post1.title = post1.title + " 바나나파인애플이다!" # 후처리
+            post1.author = request.user
             post1.save() # DB에 저장
             # postform.save()
             return redirect('/blog/') # 글 목록 페이지로 리다이렉트
@@ -114,7 +114,11 @@ def comment_update(request, pk):
     if request.method == 'POST':
         commentform = CommentForm(request.POST, instance=comment)
         if commentform.is_valid():
+
+            commentform.save(commit=False)
+            commentform.author = request.user
             commentform.save()
+
             return redirect(f'/blog/{post.pk}/')
     else:
         commentform = CommentForm(instance=comment)
