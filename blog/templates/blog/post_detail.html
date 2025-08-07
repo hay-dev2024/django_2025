@@ -34,7 +34,7 @@
         {# 글삭제 버튼#}
         <div style="text-align: right;">
 {# 글을 작성한 유저와 현재 로그인한 유저가 동일한 경우에만 글수정/삭제버튼을 보여준다#}
-            {% if user.is_authenticated and post.author == user %}0
+            {% if user.is_authenticated and post.author == user %}
                 <a class="btn btn-success" href="/blog/{{ post.pk }}/update">글수정</a>
                 <a class="btn btn-danger" href="/blog/{{ post.pk }}/delete">글삭제</a>
             {% endif %}

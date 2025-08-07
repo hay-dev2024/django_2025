@@ -1,11 +1,45 @@
+from django.contrib.auth.decorators import login_required
+from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin  # 로그인한 사용자만 접근할 수 있도록 함
 from django.shortcuts import render, redirect
-
+from django.views.generic import ListView, CreateView, DetailView, UpdateView, DeleteView
 from .forms import PostForm, CommentForm
 from .models import Post, Category, Comment
 
+# Class-based views
+class PostListView(ListView):
+    model = Post
+    # ordering = ['-created_date'] # 최신 게시글이 위에 오도록 정렬
+    ordering = ['-pk'] # 위와 동일한 기능
+
+class PostDetailView(DetailView):
+    model = Post
+
+class PostCreateView(LoginRequiredMixin, CreateView):
+    model = Post
+    fields = ['title', 'content', 'category', 'uploaded_image', 'uploaded_file']
+
+    # 비어있는 author 처리(로그인한 사용자의 author가 자동으로 설정되기 때문에 forms.py에서 삭제했음)
+    def form_valid(self, form):
+        current_user = self.request.user
+        if current_user.is_authenticated:
+            form.instance.author = current_user
+            return super(PostCreateView, self).form_valid(form)
+        else:
+            return redirect('/blog/')
+
+class PostUpdateView(LoginRequiredMixin, UpdateView):
+    model = Post
+    fields = ['title', 'content', 'category', 'uploaded_image', 'uploaded_file']
+    # template_name = 'blog/postupdateform.html'  # 템플릿 파일 경로 지정
+
+class PostDeleteView(LoginRequiredMixin, UserPassesTestMixin, DeleteView):
+    model = Post
+    success_url = '/blog/'  # 삭제 후 리다이렉트할 URL
+
+
 
 # Create your views here.
-
+# function-based views
 # 함수 생성
 def index(request):
     posts = Post.objects.all().order_by('-pk')  # 작성한 포스트를 모두 가져옴; select * from blog_post; 과 동일함. 게시물을 역순으로 정렬 : .order_by('-pk')
@@ -31,6 +65,8 @@ def category(request, slug):
                             })
 
 
+# 로그인한 사용자만 블로그 상세페이지를 볼 수 있도록 데코레이터 설정; 로그인 안한 경우에는 로그인 페이지로 리다이렉트
+@login_required(login_url='/accounts/google/login/')
 def detail(request, pk):
     post = Post.objects.get(pk=pk)  # pk(primary key)에 해당하는 포스트를 가져옴
     categorys = Category.objects.all()
@@ -46,6 +82,7 @@ def detail(request, pk):
 
 # 블로그 글쓰기 로직
 # GET과 POST 요청을 모두 처리하는 함수
+@login_required(login_url='/accounts/google/login/')
 def create(request):
     categorys = Category.objects.all()
     if request.method == 'POST':
@@ -75,7 +112,7 @@ def createfake(request):
     post.save()
     return redirect('/blog/')
 
-
+@login_required(login_url='/accounts/google/login/')
 def delete(request, pk):
     post = Post.objects.get(pk=pk)
     post.delete() # 해당 포스트를 삭제
@@ -83,6 +120,7 @@ def delete(request, pk):
     # return redirect('index') # 이렇게 써도 됨; index는 urls.py에서 정의한 이름이다. urls.py에서 name='index'로 지정해주면 된다.)
 
 # pk -> post의 pk
+@login_required(login_url='/accounts/google/login/')
 def update(request, pk):
     post = Post.objects.get(pk=pk) # 수정하고 싶은 포스트를 가져옴
     if request.method == 'POST':
@@ -99,6 +137,7 @@ def update(request, pk):
 
 
 # Comment CRUD 기능 추가
+@login_required(login_url='/accounts/google/login/')
 def comment_create(request, pk):
     post = Post.objects.get(pk=pk)
     if request.method == 'POST':
@@ -108,17 +147,16 @@ def comment_create(request, pk):
     return redirect(f'/blog/{pk}/')
 
 
+@login_required(login_url='/accounts/google/login/')
 def comment_update(request, pk):
     comment = Comment.objects.get(pk=pk) # 코멘트를 수정하거나 삭제할때는 코멘트의 pk를 사용한다.
     post = comment.post # 해당 댓글이 달린 포스트를 가져옴
     if request.method == 'POST':
         commentform = CommentForm(request.POST, instance=comment)
         if commentform.is_valid():
-
             commentform.save(commit=False)
             commentform.author = request.user
             commentform.save()
-
             return redirect(f'/blog/{post.pk}/')
     else:
         commentform = CommentForm(instance=comment)
@@ -127,7 +165,7 @@ def comment_update(request, pk):
                   template_name='blog/comment_updateform.html',
                   context={'commentform': commentform,})
 
-
+@login_required(login_url='/accounts/google/login/')
 def comment_delete(request, pk):
     comment = Comment.objects.get(pk=pk)
     post = comment.post
